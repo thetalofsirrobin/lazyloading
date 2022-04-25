@@ -180,7 +180,7 @@ var Status = {
   Completed: 2,
   Error: 3,
   Reload: 4,
-}
+};
 
 window['lazyLoad'] = {
   Title: '',
@@ -268,7 +268,7 @@ window['lazyLoad'] = {
       a.querySelector('img').onerror = () => {
         var img = this;
 
-        if (!img.hasOwnProperty('retryCount')) {
+        if (!Object.hasimg('retryCount')) {
           img.retryCount = 0;
           img.base_url = img.src;
         } else {
@@ -330,7 +330,7 @@ window['lazyLoad'] = {
           }
         }
 
-        var statusNew = lazyLoad.Pages.filter(e => e.status == Status.New);
+        statusNew = lazyLoad.Pages.filter(e => e.status == Status.New);
         for (var i = 0; i < statusNew.length; i++) {
           lazyLoad.Load(statusNew[i].pid, -1);
 
@@ -529,5 +529,7 @@ window['lazyLoad'] = {
     this.CheckButtons(i2, [], i4);
   },
 };
+
+var lazyLoad = window['lazyLoad'];
 
 lazyLoad.Start();
