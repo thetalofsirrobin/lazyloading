@@ -544,8 +544,8 @@ window['lazyLoad'] = {
   },
 
   Request: function (page, loadLevel) {
-    //var api_url = 'https://exhentai.org/api.php';
-    //var api_url = 'https://api.e-hentai.org/api.php'
+    // var api_url = 'https://exhentai.org/api.php';
+    var api_url = 'https://api.e-hentai.org/api.php';
 
     let xhr = new XMLHttpRequest();
     xhr.open('POST', api_url, true);
