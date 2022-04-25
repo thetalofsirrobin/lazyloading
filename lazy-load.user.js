@@ -138,7 +138,7 @@ var style = `
 document.head.innerHTML += style;
 /***************************/
 /**         Events        **/
-document.onKeyDown = function (e) {
+function handleKeyDown (e) {
   if (e.altKey || e.ctrlKey || e.metaKey) {
     holdingOverrideKey = true;
     return;
@@ -198,7 +198,7 @@ document.onKeyDown = function (e) {
 
     cancelEvent(e);
   }
-};
+}
 
 if (
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -232,6 +232,8 @@ if (
     else $('#prev').click();
   });
 }
+
+document.addEventListener('keydown', handleKeyDown);
 /***************************/
 
 var Status = {
@@ -241,6 +243,8 @@ var Status = {
   Error: 3,
   Reload: 4,
 };
+
+/* LazyLoad Object */
 
 window['lazyLoad'] = {
   Title: '',
@@ -258,6 +262,7 @@ window['lazyLoad'] = {
   Start: function () {
     var path = location.pathname.split('/');
     var imgKey = path[2];
+    this.gid = parseInt(path[3].split('-')[0]);
     var pid = parseInt(path[3].split('-')[1]);
     var i6 = $('#i6').innerHTML;
     var i7 = $('#i7').innerHTML;
@@ -331,7 +336,7 @@ window['lazyLoad'] = {
       a.querySelector('img').onerror = () => {
         var img = this;
 
-        if (!Object.hasimg('retryCount')) {
+        if (!img['retryCount']) {
           img.retryCount = 0;
           img.base_url = img.src;
         } else {
@@ -341,7 +346,7 @@ window['lazyLoad'] = {
         if (img.retryCount < 10) {
           setTimeout(
             () => (img.src = img.base_url + '?' + img.retryCount),
-            1000
+            1000,
           );
         }
       };
@@ -395,7 +400,7 @@ window['lazyLoad'] = {
 
         if (statusNew.length == 0) {
           var statusLoading = lazyLoad.Pages.filter(
-            (e) => e.status == Status.Loading
+            (e) => e.status == Status.Loading,
           );
 
           if (statusLoading.length == 0) {
@@ -455,7 +460,7 @@ window['lazyLoad'] = {
 
   AddHistory: function (page) {
     if (history.pushState) {
-      var link = `${location.origin}/s/${page.imgKey}/${gid}-${page.pid}`;
+      var link = `${location.origin}/s/${page.imgKey}/${this.gid}-${page.pid}`;
       history.pushState({ page, imgKey: page.imgKey }, document.title, link);
     }
   },
@@ -565,7 +570,7 @@ window['lazyLoad'] = {
     };
 
     var imgkey = page.imgKey;
-    var dto = { method: 'showpage', gid, page: page.pid, imgkey, showkey };
+    var dto = { method: 'showpage', gid: this.gid, page: page.pid, imgkey, showkey };
     xhr.send(JSON.stringify(dto));
   },
   ApplyJson: function (json, page, loadLevel) {
